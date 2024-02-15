@@ -1,0 +1,44 @@
+/* #slpnamespace\.slpapp\:\:SupplierMain--item0-slpnamespace\.slpapp\:\:SupplierMain--tab1-0,
+#slpnamespace\.slpapp\:\:SupplierMain--item0-slpnamespace\.slpapp\:\:SupplierMain--tab1-1,
+#slpnamespace\.slpapp\:\:SupplierMain--item0-slpnamespace\.slpapp\:\:SupplierMain--tab1-2{
+    background: red;
+}; */
+.customclasscolor{
+    background: blueviolet;
+    color: white;
+}
+
+/* .sapMColumnHeaderContent{
+    background: #962525;
+} */
+
+/* 
+.sapMTableTHead{
+    background-color:#99CCFF ;
+} */
+.sapMTableTH{
+    background:#D3D3D3;
+}
+
+.customclasscolorback{
+    background: rgb(195, 233, 250);
+}
+
+.testtest{
+    background: black;
+}
+
+.sapMListTblSubRow{
+    background: rgb(225, 234, 243);
+    padding: 2px;
+}
+
+.custumcss{
+    background: aqua;
+}
+
+.myTableHeader {
+    
+    font-weight: bold;
+    color:#99CCFF;
+}

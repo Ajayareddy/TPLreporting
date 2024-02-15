@@ -1,0 +1,137 @@
+_schema-version: "3.1"
+ID: TPLreporting
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: TPLreporting-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: uaa_TPLreporting
+      - name: TPLreporting1-db
+      - name: TPLreporting-destination-service
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+  - name: TPLreporting-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: TPLreporting-destination-service
+        parameters:
+          content-target: true
+      - name: TPLreporting_html_repo_host
+        parameters:
+          service-key:
+            name: TPLreporting_html_repo_host-key
+      - name: uaa_TPLreporting
+        parameters:
+          service-key:
+            name: uaa_TPLreporting-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: TPLreportingrouter_TPLreporting_html_repo_host
+              ServiceInstanceName: TPLreporting-html5-app-host-service
+              ServiceKeyName: TPLreporting_html_repo_host-key
+              sap.cloud.service: TPLreportingrouter
+            - Authentication: OAuth2UserTokenExchange
+              Name: TPLreportingrouter_uaa_TPLreporting
+              ServiceInstanceName: TPLreporting-xsuaa-service
+              ServiceKeyName: uaa_TPLreporting-key
+              sap.cloud.service: TPLreportingrouter
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+  - name: TPLreporting-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: TPLreporting_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - tatsuppliertplreportingapp.zip
+          name: tatsuppliertplreportingapp
+          target-path: resources/
+  - name: tatsuppliertplreportingapp
+    type: html5
+    path: app/tplreportingapp
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms:
+        []
+
+  - name: TPLreporting1-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: TPLreporting1-db
+resources:
+  - name: TPLreporting-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: TPLreporting-srv-api
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: TPLreporting-destination-service
+      service-plan: lite
+    requires:
+      - name: srv-api
+  - name: TPLreporting_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: TPLreporting-html5-app-host-service
+      service-plan: app-host
+  - name: uaa_TPLreporting
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-name: TPLreporting-xsuaa-service
+      service-plan: application
+  - name: TPLreporting1-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx cds build --production
