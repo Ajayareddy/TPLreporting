@@ -1,0 +1,11 @@
+VIEW TPL_service_Tasks AS SELECT
+  Tasks_0.task_name,
+  Tasks_0.sm_id,
+  Tasks_0.start_date,
+  Tasks_0.end_date,
+  Tasks_0.tat_for_registration_completion,
+  Tasks_0."USER"
+FROM TPL_projects_Tasks AS Tasks_0
+WITH ASSOCIATIONS (
+  MANY TO ONE JOIN TPL_service_Supplier AS supplier ON (supplier.sm_id = sm_id)
+)

@@ -1,0 +1,8 @@
+COLUMN TABLE TPL_projects_Supplier (
+  sm_id NVARCHAR(5000) NOT NULL,
+  supplier_name NVARCHAR(5000),
+  erp_vendor_code NVARCHAR(5000),
+  PRIMARY KEY(sm_id)
+) WITH ASSOCIATIONS (
+  MANY TO MANY JOIN TPL_projects_Tasks AS tasks ON (tasks.sm_id = sm_id)
+)

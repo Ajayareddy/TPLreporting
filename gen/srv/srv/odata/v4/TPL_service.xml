@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="TPL_service" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Supplier" EntityType="TPL_service.Supplier">
+          <NavigationPropertyBinding Path="tasks/supplier" Target="Supplier"/>
+        </EntitySet>
+      </EntityContainer>
+      <EntityType Name="Supplier">
+        <Key>
+          <PropertyRef Name="sm_id"/>
+        </Key>
+        <Property Name="sm_id" Type="Edm.String" Nullable="false"/>
+        <Property Name="supplier_name" Type="Edm.String"/>
+        <Property Name="erp_vendor_code" Type="Edm.String"/>
+        <NavigationProperty Name="tasks" Type="Collection(TPL_service.Tasks)" ContainsTarget="true"/>
+      </EntityType>
+      <EntityType Name="Tasks">
+        <Key>
+          <PropertyRef Name="task_name"/>
+          <PropertyRef Name="sm_id"/>
+        </Key>
+        <Property Name="task_name" Type="Edm.String" Nullable="false"/>
+        <Property Name="sm_id" Type="Edm.String" Nullable="false"/>
+        <Property Name="start_date" Type="Edm.String"/>
+        <Property Name="end_date" Type="Edm.String"/>
+        <Property Name="tat_for_registration_completion" Type="Edm.String"/>
+        <Property Name="user" Type="Edm.String"/>
+        <NavigationProperty Name="supplier" Type="TPL_service.Supplier"/>
+      </EntityType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

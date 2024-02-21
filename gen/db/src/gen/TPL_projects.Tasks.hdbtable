@@ -1,0 +1,11 @@
+COLUMN TABLE TPL_projects_Tasks (
+  task_name NVARCHAR(5000) NOT NULL,
+  sm_id NVARCHAR(5000) NOT NULL,
+  start_date NVARCHAR(5000),
+  end_date NVARCHAR(5000),
+  tat_for_registration_completion NVARCHAR(5000),
+  "USER" NVARCHAR(5000),
+  PRIMARY KEY(task_name, sm_id)
+) WITH ASSOCIATIONS (
+  MANY TO ONE JOIN TPL_projects_Supplier AS supplier ON (supplier.sm_id = sm_id)
+)

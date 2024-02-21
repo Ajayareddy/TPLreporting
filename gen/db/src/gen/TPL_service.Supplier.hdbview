@@ -1,0 +1,8 @@
+VIEW TPL_service_Supplier AS SELECT
+  Supplier_0.sm_id,
+  Supplier_0.supplier_name,
+  Supplier_0.erp_vendor_code
+FROM TPL_projects_Supplier AS Supplier_0
+WITH ASSOCIATIONS (
+  MANY TO MANY JOIN TPL_service_Tasks AS tasks ON (tasks.sm_id = sm_id)
+)

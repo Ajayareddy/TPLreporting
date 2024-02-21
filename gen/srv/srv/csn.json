@@ -1,0 +1,192 @@
+{
+  "namespace": "TPL_projects",
+  "definitions": {
+    "TPL_projects.Supplier": {
+      "kind": "entity",
+      "elements": {
+        "sm_id": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "supplier_name": {
+          "type": "cds.String"
+        },
+        "erp_vendor_code": {
+          "type": "cds.String"
+        },
+        "tasks": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "TPL_projects.Tasks",
+          "on": [
+            {
+              "ref": [
+                "tasks",
+                "sm_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "sm_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "TPL_projects.Tasks": {
+      "kind": "entity",
+      "elements": {
+        "task_name": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "sm_id": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "start_date": {
+          "type": "cds.String"
+        },
+        "end_date": {
+          "type": "cds.String"
+        },
+        "tat_for_registration_completion": {
+          "type": "cds.String"
+        },
+        "user": {
+          "type": "cds.String"
+        },
+        "supplier": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "TPL_projects.Supplier",
+          "on": [
+            {
+              "ref": [
+                "supplier",
+                "sm_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "sm_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "TPL_service": {
+      "@source": "srv/service.cds",
+      "kind": "service"
+    },
+    "TPL_service.Supplier": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "TPL_projects.Supplier"
+          ]
+        }
+      },
+      "elements": {
+        "sm_id": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "supplier_name": {
+          "type": "cds.String"
+        },
+        "erp_vendor_code": {
+          "type": "cds.String"
+        },
+        "tasks": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "TPL_service.Tasks",
+          "on": [
+            {
+              "ref": [
+                "tasks",
+                "sm_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "sm_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "TPL_service.Tasks": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "TPL_projects.Tasks"
+          ]
+        }
+      },
+      "elements": {
+        "task_name": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "sm_id": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "start_date": {
+          "type": "cds.String"
+        },
+        "end_date": {
+          "type": "cds.String"
+        },
+        "tat_for_registration_completion": {
+          "type": "cds.String"
+        },
+        "user": {
+          "type": "cds.String"
+        },
+        "supplier": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "TPL_service.Supplier",
+          "on": [
+            {
+              "ref": [
+                "supplier",
+                "sm_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "sm_id"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "meta": {
+    "creator": "CDS Compiler v4.6.2",
+    "flavor": "inferred"
+  },
+  "$version": "2.0"
+}

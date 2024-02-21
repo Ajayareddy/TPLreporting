@@ -1,0 +1,13 @@
+{
+    "odata": {
+        "flavor": "x4"
+      },
+      "requires": {
+        "iflow": {
+          "kind": "rest",
+          "credentials": {
+            "url": "https://tata-projects-limited-btp-dev-0or0hi20-dev-space-tplrep429840d3.cfapps.eu10-004.hana.ondemand.com/odata/v4/tpl-service"
+          }
+        }
+    }
+}
