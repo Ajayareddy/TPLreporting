@@ -71,6 +71,8 @@ modules:
       commands:
         - npm install
         - npm run build:cf
+        - npm ci
+        - npx cds build --production
       supported-platforms:
         []
 
