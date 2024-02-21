@@ -8,6 +8,7 @@ entity Supplier {
                               on tasks.sm_id = sm_id;
 }
 
+
 entity Tasks {
     key task_name                       : String;
     key sm_id                           : String;
