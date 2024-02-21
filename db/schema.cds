@@ -18,3 +18,4 @@ entity Tasks {
         supplier                        : Association to one Supplier
                                               on supplier.sm_id = sm_id;
 }
+  
